@@ -1,0 +1,18 @@
+{
+  "name": "lab.hidetake.org",
+  "description": "experimental playground",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/int128/lab.hidetake.org.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "bower": "^1.3.7",
+    "coffee-script": "^1.7.1",
+    "del": "^0.1.1",
+    "gulp": "^3.8.5",
+    "gulp-csso": "^0.2.9",
+    "gulp-ngmin": "^0.3.0",
+    "gulp-uglify": "^0.3.1"
+  }
+}
