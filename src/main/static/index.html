@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="knApp">
 <head>
   <meta charset="utf-8"/>
   <title>example</title>
   <link rel="stylesheet" href="css/bootstrap.min.css" />
   <link rel="stylesheet" href="app.css" />
 </head>
-<body>
+<body ng-controller="NoteListController">
 
   <div class="container">
     <h1>example</h1>
+
+    <form>
+      <textarea>{{notebooks}}</textarea>
+    </form>
   </div>
 
 </body>

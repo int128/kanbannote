@@ -1,1 +1,1 @@
-console.info 'example'
+app = angular.module 'knApp', ['knControllers']
