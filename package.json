@@ -1,9 +1,9 @@
 {
-  "name": "lab.hidetake.org",
-  "description": "experimental playground",
+  "name": "kanbannote",
+  "description": "kanban note",
   "repository": {
     "type": "git",
-    "url": "git://github.com/int128/lab.hidetake.org.git"
+    "url": "git://github.com/int128/kanbannote.git"
   },
   "dependencies": {},
   "devDependencies": {
