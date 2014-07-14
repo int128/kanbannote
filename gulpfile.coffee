@@ -1,40 +1,38 @@
 gulp = require('gulp')
+concat = require('gulp-concat')
+coffee = require('gulp-coffee')
 ngmin = require('gulp-ngmin')
 uglify = require('gulp-uglify')
-csso = require('gulp-csso')
+less = require('gulp-less')
+connect = require('gulp-connect')
 del = require('del')
 bower = require('bower')
 
 sources =
   bower:  'bower.json'
-  js:     'src/main/assets/**/*.js'
-  css:    'src/main/assets/**/*.css'
-  static: 'src/main/assets/**/*.!(js|css)'
+  coffee: 'src/main/coffeescript/**/*'
+  less:   'src/main/less/**/*'
+  static: 'src/main/static/**/*'
 
 target = 'src/main/webapp/'
 
 gulp.task 'bower', ->
   bower.commands.install().on 'end', (installed) ->
-    gulp.src([
-      'bower_components/jquery/dist/jquery.min.js'
-      'bower_components/knockout/dist/knockout.js'
-      'bower_components/angular/angular.min.js'
-      'bower_components/google-diff-match-patch-js/diff_match_patch.js'
-      'bower_components/bootstrap/dist/js/bootstrap.min.js'
-      'bower_components/bootstrap/dist/css/bootstrap.min.css'
-      'bower_components/bootstrap/dist/css/bootstrap-theme.min.css'
-      'bower_components/bootstrap/dist/fonts/'
-    ]).pipe gulp.dest("#{target}/vendors")
+#    gulp.src([
+#    ]).pipe gulp.dest(target)
 
-gulp.task 'js', ->
-  gulp.src(sources.js)
+gulp.task 'coffee', ->
+  gulp.src(sources.coffee)
+    .pipe(coffee())
     .pipe(ngmin())
     .pipe(uglify())
+    .pipe(concat('app.js'))
     .pipe gulp.dest(target)
 
-gulp.task 'css', ->
-  gulp.src(sources.css)
-    .pipe(csso())
+gulp.task 'less', ->
+  gulp.src(sources.less)
+    .pipe(less())
+    .pipe(concat('app.css'))
     .pipe gulp.dest(target)
 
 gulp.task 'static', ->
@@ -42,13 +40,18 @@ gulp.task 'static', ->
     .pipe gulp.dest(target)
 
 gulp.task 'default', ['clean'], ->
-  gulp.start 'bower', 'js', 'css', 'static'
+  gulp.start 'bower', 'coffee', 'less', 'static'
 
 gulp.task 'watch', ->
-  target = 'target/webapp/'
   gulp.watch sources.bower,  ['bower']
-  gulp.watch sources.js,     ['js']
-  gulp.watch sources.css,    ['css']
+  gulp.watch sources.coffee, ['coffee']
+  gulp.watch sources.less,   ['less']
   gulp.watch sources.static, ['static']
+
+gulp.task 'server', ['watch'], ->
+  connect.server
+    root: target
+    port: 8888
+    livereload: true
 
 gulp.task 'clean', (cb) -> del target, cb
