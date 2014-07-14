@@ -1,32 +1,17 @@
-App Engine Blank Project
-========================
+Kanban Note service
+===================
 
-Template project of App Engine application.
+App Engine application at https://kanbannote.appspot.com
 
 
-How to use
-----------
-
-Clone the repository.
-
-```bash
-git clone git@github.com:int128/sbt-appengine-blank.git myapp
-cd myapp
-git remote rename origin template
-```
+How to build
+------------
 
 Unpack the App Engine SDK and set the environment variable `APPENGINE_SDK_HOME`.
 
 ```bash
 # ~/.bashrc
 export APPENGINE_SDK_HOME="$HOME/App/appengine-java-sdk-x.y.z"
-```
-
-Open `src/main/webapp/WEB-INF/appengine-web.xml` and change the application id.
-
-```xml
-<appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
-    <application>myapp</application>
 ```
 
 Then, build and start a development server.
@@ -51,4 +36,3 @@ This project contains following:
     * Scalate generating support with xsbt-scalate-generator
   * App Engine support with sbt-appengine
   * Assets management with gulp and bower
-
