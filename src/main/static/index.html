@@ -9,10 +9,20 @@
 <body ng-controller="NoteListController">
 
   <div class="container">
-    <h1>example</h1>
+    <h1>Notes</h1>
 
-    <form>
-      <textarea>{{notebooks}}</textarea>
+    <form ng-submit="query()">
+      <div class="form-group">
+        <label for="token">Token</label>
+        <input type="text" id="token" ng-model="token" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label for="notes">Notes</label>
+        <textarea id="notes" class="form-control" readonly>{{notes}}</textarea>
+      </div>
+
+      <button type="submit" class="btn btn-default">Submit</button>
     </form>
   </div>
 
