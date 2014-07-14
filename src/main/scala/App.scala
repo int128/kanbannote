@@ -14,31 +14,29 @@ class App extends unfiltered.filter.Plan {
 
   def intent = {
     case req @ GET(Path("/notes")) =>
-      val token = ""
-      val auth = new EvernoteAuth(EvernoteService.SANDBOX, token)
-      val factory = new ClientFactory(auth)
+      TokenHeader(req) match {
+        case Some(token) =>
+          val auth = new EvernoteAuth(EvernoteService.SANDBOX, token)
+          val factory = new ClientFactory(auth)
 
-      val userStore = factory.createUserStoreClient()
-      userStore.checkVersion(getClass.getName, EDAM_VERSION_MAJOR, EDAM_VERSION_MINOR) match {
-        case true =>
-          val noteStore = factory.createNoteStoreClient()
-          val notebooks = noteStore.listNotebooks()
-          val result = notebooks.map(_.getName)
+          val userStore = factory.createUserStoreClient()
+          userStore.checkVersion(getClass.getName, EDAM_VERSION_MAJOR, EDAM_VERSION_MINOR) match {
+            case true =>
+              val noteStore = factory.createNoteStoreClient()
+              val notebooks = noteStore.listNotebooks()
+              val result = notebooks.map(_.getName)
 
-          JsonContent ~> ResponseString(compact(render(
-            result
-          )))
+              JsonContent ~> ResponseString(compact(render(
+                result
+              )))
 
-        case false =>
-          InternalServerError ~> ResponseString("Incompatible protocol version")
+            case false =>
+              InternalServerError ~> ResponseString("Incompatible protocol version")
+          }
+
+        case None =>
+          NotFound
       }
-
-//      TokenHeader(req) match {
-//        case Some(token) =>
-//
-//        case None =>
-//          NotFound
-//      }
   }
 
 }
