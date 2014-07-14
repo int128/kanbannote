@@ -8,3 +8,8 @@ libraryDependencies ++= Seq(
   "javax.servlet" % "servlet-api" % "2.5" % "provided",
   "net.databinder" %% "unfiltered-filter" % "0.8.0"
 )
+
+libraryDependencies ++= Seq(
+  "org.json4s" %% "json4s-native" % "3.2.9",
+  "com.evernote" % "evernote-api" % "1.25.1"
+)
