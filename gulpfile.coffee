@@ -21,6 +21,7 @@ gulp.task 'bower', ->
     gulp.src([
       'bower_components/angular/angular.min.js'
       'bower_components/angular/angular.min.js.map'
+      'bower_components/angular-route/angular-route.min.js'
       'bower_components/bootstrap/dist/**/*'
     ]).pipe gulp.dest(target)
 
