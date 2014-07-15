@@ -20,7 +20,6 @@ gulp.task 'bower', ->
   bower.commands.install().on 'end', (installed) ->
     gulp.src([
         'bower_components/angular/angular.min.js'
-        'bower_components/angular-route/angular-route.min.js'
       ])
       .pipe(concat('lib.js'))
       .pipe gulp.dest(target)
