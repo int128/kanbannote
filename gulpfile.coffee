@@ -19,11 +19,15 @@ target = 'src/main/webapp/'
 gulp.task 'bower', ->
   bower.commands.install().on 'end', (installed) ->
     gulp.src([
-      'bower_components/angular/angular.min.js'
-      'bower_components/angular/angular.min.js.map'
-      'bower_components/angular-route/angular-route.min.js'
-      'bower_components/bootstrap/dist/**/*'
-    ]).pipe gulp.dest(target)
+        'bower_components/angular/angular.min.js'
+        'bower_components/angular-route/angular-route.min.js'
+      ])
+      .pipe(concat('lib.js'))
+      .pipe gulp.dest(target)
+    gulp.src([
+        'bower_components/bootstrap/dist/**/*'
+      ])
+      .pipe gulp.dest(target)
 
 gulp.task 'coffee', ->
   gulp.src(sources.coffee)
