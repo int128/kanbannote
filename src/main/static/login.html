@@ -1,0 +1,17 @@
+<div class="alert alert-info" role="alert">OAuth 2.0 login is not implemented yet</div>
+
+<div>
+  <form>
+    <div class="form-group">
+      <input type="text" ng-model="token" placeholder="Token" class="form-control" />
+    </div>
+    <div class="btn-group">
+      <button type="button" ng-click="loginWithToken('production')" class="btn btn-default">
+        Login to Production
+      </button>
+      <button type="button" ng-click="loginWithToken('sandbox')" class="btn btn-default">
+        or Sandbox
+      </button>
+    </div>
+  </form>
+</div>
