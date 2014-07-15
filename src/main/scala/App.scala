@@ -13,12 +13,19 @@ import scala.collection.JavaConversions._
 class App extends unfiltered.filter.Plan {
 
   object TokenHeader extends StringHeader("X-EN-Token")
+  object EnvironmentHeader extends StringHeader("X-EN-Environment")
 
   def intent = {
     case req @ GET(Path("/notes")) =>
       TokenHeader(req) match {
         case Some(token) =>
-          val auth = new EvernoteAuth(EvernoteService.SANDBOX, token)
+          val environment = EnvironmentHeader(req) match {
+            case Some("sandbox")    => EvernoteService.SANDBOX
+            case Some("production") => EvernoteService.PRODUCTION
+            case _                  => EvernoteService.SANDBOX
+          }
+
+          val auth = new EvernoteAuth(environment, token)
           val factory = new ClientFactory(auth)
 
           val userStore = factory.createUserStoreClient()
