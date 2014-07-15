@@ -1,5 +1,7 @@
 import com.evernote.auth.{EvernoteAuth, EvernoteService}
 import com.evernote.clients.ClientFactory
+import com.evernote.edam.`type`.NoteSortOrder
+import com.evernote.edam.notestore.NoteFilter
 import com.evernote.edam.userstore.Constants._
 import org.json4s.JsonDSL._
 import org.json4s.native.JsonMethods._
@@ -23,11 +25,19 @@ class App extends unfiltered.filter.Plan {
           userStore.checkVersion(getClass.getName, EDAM_VERSION_MAJOR, EDAM_VERSION_MINOR) match {
             case true =>
               val noteStore = factory.createNoteStoreClient()
-              val notebooks = noteStore.listNotebooks()
-              val result = notebooks.map(_.getName)
+
+              val filter = new NoteFilter()
+              filter.setOrder(NoteSortOrder.CREATED.getValue)
+              filter.setAscending(false)
+              val notes = noteStore.findNotes(filter, 0, 100).getNotes
 
               JsonContent ~> ResponseString(compact(render(
-                result
+                "notes" -> notes.map(note => Map(
+                  "guid" -> note.getGuid,
+                  "title" -> note.getTitle,
+                  "created" -> note.getCreated.toString,
+                  "updated" -> note.getUpdated.toString
+                ))
               )))
 
             case false =>
