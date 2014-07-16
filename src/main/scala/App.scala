@@ -14,12 +14,12 @@ class App extends unfiltered.filter.Plan with Evernote {
       val notes = service.findRecentNotes(0, 100)
 
       JsonContent ~> ResponseString(compact(render(
-        "notes" -> notes.map(note => Map(
-          "guid" -> note.getGuid,
-          "title" -> note.getTitle,
-          "created" -> note.getCreated.toString,
-          "updated" -> note.getUpdated.toString
-        ))
+        notes.map(note =>
+          ("guid" -> note.getGuid) ~
+          ("title" -> note.getTitle) ~
+          ("created" -> note.getCreated.toString) ~
+          ("updated" -> note.getUpdated.toString)
+        )
       )))
 
     case GET(Path(Seg("note" :: guid :: Nil))) & EvernoteAuth(auth) =>

@@ -6,8 +6,8 @@ controllers.controller 'LoginController', ($scope, $location, $sessionStorage) -
     $location.path 'notes'
 
 controllers.controller 'NotesController', ($scope, Note) ->
-  Note.list().success (data) ->
-    $scope.notes = data.notes
+  Note.list().success (notes) ->
+    $scope.notes = notes
 
 controllers.controller 'NoteController', ($scope, $routeParams, Note) ->
   Note.get($routeParams.guid).success (note) ->
