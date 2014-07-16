@@ -32,10 +32,10 @@ class App extends unfiltered.filter.Plan with Evernote {
         ("created" -> note.getCreated.toString) ~
         ("updated" -> note.getUpdated.toString) ~
         ("content" -> note.getContent) ~
-        ("resources" -> note.getResources.map(resource =>
+        ("resources" -> Option(note.getResources).map(_.map(resource =>
           ("guid" -> resource.getGuid) ~
           ("mime" -> resource.getMime)
-        ))
+        )))
       )))
   }
 
