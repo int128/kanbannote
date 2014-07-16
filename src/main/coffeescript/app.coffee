@@ -1,4 +1,4 @@
-app = angular.module 'knApp', ['ngRoute', 'knControllers']
+app = angular.module 'knApp', ['ngRoute', 'knControllers', 'knServices']
 
 app.config ($routeProvider) ->
   $routeProvider
