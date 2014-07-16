@@ -10,5 +10,5 @@ controllers.controller 'NotesController', ($scope, Note) ->
     $scope.notes = data.notes
 
 controllers.controller 'NoteController', ($scope, $routeParams, Note) ->
-  Note.get($routeParams.guid).success (data) ->
-    $scope.note = data.note
+  Note.get($routeParams.guid).success (note) ->
+    $scope.note = note

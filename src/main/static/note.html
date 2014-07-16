@@ -1,3 +1,10 @@
 <div>
-  {{note.title}}
+  <h2>{{note.title}}</h2>
+  <textarea class="form-control">{{note.content}}</textarea>
+  <ul>
+    <li ng-repeat="resource in note.resources">
+      {{resource.mime}}
+      {{resource.guid}}
+    </li>
+  </ul>
 </div>

@@ -8,4 +8,4 @@ services.factory 'Note', ($http, $sessionStorage) ->
   list: ->
     $http.get('/notes', auth())
   get: (guid) ->
-    $http.get("/note/#{$guid}", auth())
+    $http.get("/note/#{guid}", auth())
