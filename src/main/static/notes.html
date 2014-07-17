@@ -1,10 +1,8 @@
 <div class="list-group">
 
-  <div ng-repeat="note in notes">
-    <a href="#/note/{{note.guid}}" class="list-group-item">
-      <h4 class="list-group-item-heading">{{note.title}}</h4>
-      <p class="list-group-item-text">{{note.updated}}</p>
-    </a>
-  </div>
+  <a ng-repeat="note in notes" href="#/note/{{note.guid}}" class="list-group-item">
+    {{note.title}}
+    {{note.updated}}
+  </a>
 
 </div>

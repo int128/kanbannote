@@ -1,11 +1,14 @@
 <div>
   <h2>{{note.title}}</h2>
+  <h3>Content</h3>
   <textarea class="form-control">{{note.content}}</textarea>
-  <ul>
-    <li ng-repeat="resource in note.resources">
-      <a href="/resource/{{resource.guid}}?o={{resource.key}}">
-        {{resource.guid}} ({{resource.mime}})
-      </a>
-    </li>
-  </ul>
+  <h3>Resources</h3>
+  <div class="list-group">
+    <a ng-repeat="resource in note.resources"
+       href="/resource/{{resource.guid}}?o={{resource.key}}"
+       class="list-group-item">
+      <span class="label label-info">{{resource.mime}}</span>
+      {{resource.guid}}
+    </a>
+  </div>
 </div>
