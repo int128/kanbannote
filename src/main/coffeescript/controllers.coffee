@@ -1,7 +1,7 @@
 controllers = angular.module 'knControllers', ['ngStorage']
 
-controllers.controller 'LoginController', ($scope, $location, $sessionStorage) ->
-  $scope.$storage = $sessionStorage
+controllers.controller 'LoginController', ($scope, $location, Note) ->
+  $scope.$storage = Note.authStorage
   $scope.loginWithToken = (environment) ->
     $location.path 'notes'
 
