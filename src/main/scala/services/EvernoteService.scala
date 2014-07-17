@@ -1,6 +1,5 @@
 package services
 
-import com.evernote.auth._
 import com.evernote.clients.ClientFactory
 import com.evernote.edam.`type`.NoteSortOrder
 import com.evernote.edam.notestore.NoteFilter
@@ -33,7 +32,7 @@ case class EvernoteService(factory: ClientFactory) {
 
 object EvernoteService {
 
-  def create(auth: EvernoteAuth) =
-    EvernoteService(new ClientFactory(auth))
+  def create(environment: com.evernote.auth.EvernoteService, token: String) =
+    EvernoteService(new ClientFactory(new com.evernote.auth.EvernoteAuth(environment, token)))
 
 }

@@ -9,8 +9,8 @@ import scala.collection.JavaConversions._
 class App extends unfiltered.filter.Plan with Evernote {
 
   def intent = {
-    case GET(Path("/notes")) & EvernoteAuth(auth) =>
-      val service = EvernoteService.create(auth)
+    case GET(Path("/notes")) & EvernoteAuth(environment, token) =>
+      val service = EvernoteService.create(environment, token)
       val notes = service.findRecentNotes(0, 100)
 
       JsonContent ~> ResponseString(compact(render(
@@ -22,8 +22,8 @@ class App extends unfiltered.filter.Plan with Evernote {
         )
       )))
 
-    case GET(Path(Seg("note" :: guid :: Nil))) & EvernoteAuth(auth) =>
-      val service = EvernoteService.create(auth)
+    case GET(Path(Seg("note" :: guid :: Nil))) & EvernoteAuth(environment, token) =>
+      val service = EvernoteService.create(environment, token)
       val note = service.getNoteWithContent(guid)
 
       JsonContent ~> ResponseString(compact(render(
@@ -38,8 +38,8 @@ class App extends unfiltered.filter.Plan with Evernote {
         )))
       )))
 
-    case GET(Path(Seg("resource" :: guid :: Nil))) & EvernoteAuth(auth) =>
-      val service = EvernoteService.create(auth)
+    case GET(Path(Seg("resource" :: guid :: Nil))) & EvernoteAuth(environment, token) =>
+      val service = EvernoteService.create(environment, token)
       val resource = service.getResource(guid)
 
       ContentType(resource.getMime) ~>
