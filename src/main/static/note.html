@@ -3,8 +3,9 @@
   <textarea class="form-control">{{note.content}}</textarea>
   <ul>
     <li ng-repeat="resource in note.resources">
-      {{resource.mime}}
-      {{resource.guid}}
+      <a href="/resource/{{resource.guid}}">
+        {{resource.guid}} ({{resource.mime}})
+      </a>
     </li>
   </ul>
 </div>

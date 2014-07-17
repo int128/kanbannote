@@ -5,8 +5,9 @@ import unfiltered.request._
 import unfiltered.response._
 
 import scala.collection.JavaConversions._
+import scala.util.Random
 
-class App extends unfiltered.filter.Plan with Evernote {
+class App extends unfiltered.filter.Plan with Evernote with Memcache {
 
   def intent = {
     case GET(Path("/notes")) & AuthHeader(auth) =>
@@ -23,6 +24,9 @@ class App extends unfiltered.filter.Plan with Evernote {
       )))
 
     case GET(Path(Seg("note" :: guid :: Nil))) & AuthHeader(auth) =>
+      val resourcesAccessKey = Random.alphanumeric.take(32).mkString
+      putCache(resourcesAccessKey, auth)
+
       val service = EvernoteService.create(auth)
       val note = service.getNoteWithContent(guid)
 
@@ -36,16 +40,30 @@ class App extends unfiltered.filter.Plan with Evernote {
           ("resources" -> Option(note.getResources).map(_.map(resource =>
             ("guid" -> resource.getGuid) ~
             ("mime" -> resource.getMime)
-          )))
+          ))) ~
+          ("resourcesAccessKey" -> resourcesAccessKey)
         )))
 
-    case GET(Path(Seg("resource" :: guid :: Nil))) & AuthCookie(auth) =>
-      val service = EvernoteService.create(auth)
-      val resource = service.getResource(guid)
+    case GET(Path(Seg("resource" :: guid :: Nil))) & ResourcesAccessKey(key) =>
+      getCache[EvernoteAuth](key) match {
+        case Some(auth) =>
+          val service = EvernoteService.create(auth)
+          val resource = service.getResource(guid)
 
-      ContentType(resource.getMime) ~>
-        ContentLength(resource.getData.getSize.toString) ~>
-        ResponseBytes(resource.getData.getBody)
+          ContentType(resource.getMime) ~>
+            ContentLength(resource.getData.getSize.toString) ~>
+            ResponseBytes(resource.getData.getBody)
+
+        case _ => NotFound
+      }
+  }
+
+  object ResourcesAccessKey extends StringCookie("resourcesAccessKey")
+
+  class StringCookie(name: String) {
+    def unapply[T](req: HttpRequest[T]): Option[String] = req match {
+      case Cookies(cookies) => cookies(name).headOption.map(_.value)
+    }
   }
 
 }
