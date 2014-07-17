@@ -9,6 +9,14 @@ trait Memcache {
     s
   }
 
+  def getCache[T](key: String): Option[T] =
+    Option(memcacheService.get(key).asInstanceOf[T])
+
+  def putCache[T](key: String, value: T): T = {
+    memcacheService.put(key, value)
+    value
+  }
+
   /**
    * Get the cached entry or calculate the value.
    *
@@ -18,12 +26,8 @@ trait Memcache {
    * @return cached entry or calculated value
    */
   def getCacheOrValue[T](key: String, value: => T): T =
-    memcacheService.get(key) match {
-      case null =>
-        val evaluated = value
-        memcacheService.put(key, evaluated)
-        evaluated
-
-      case cached => cached.asInstanceOf[T]
+    getCache(key) match {
+      case Some(cached) => cached
+      case None => putCache(key, value)
     }
 }

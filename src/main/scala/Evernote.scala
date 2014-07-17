@@ -1,5 +1,5 @@
-import com.evernote.auth._
-import scala.util.control.Exception._
+import services.EvernoteAuth
+
 import unfiltered.request._
 
 trait Evernote {
@@ -8,13 +8,10 @@ trait Evernote {
 
   object EnvironmentHeader extends StringHeader("X-EN-Environment")
 
-  object EvernoteAuth {
+  object AuthHeader {
     def unapply[T](req: HttpRequest[T]) =
       (EnvironmentHeader(req), TokenHeader(req)) match {
-        case (Some(environment), Some(token)) =>
-          catching(classOf[IllegalArgumentException]) opt
-            (EvernoteService.valueOf(environment), token)
-
+        case (Some(environment), Some(token)) => EvernoteAuth(environment, token)
         case _ => None
       }
   }

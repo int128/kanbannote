@@ -32,7 +32,9 @@ case class EvernoteService(factory: ClientFactory) {
 
 object EvernoteService {
 
-  def create(environment: com.evernote.auth.EvernoteService, token: String) =
-    EvernoteService(new ClientFactory(new com.evernote.auth.EvernoteAuth(environment, token)))
+  def create(auth: EvernoteAuth) =
+    EvernoteService(
+      new ClientFactory(
+        new com.evernote.auth.EvernoteAuth(auth.environment, auth.token)))
 
 }
