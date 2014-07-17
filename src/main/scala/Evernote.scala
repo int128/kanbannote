@@ -16,4 +16,22 @@ trait Evernote {
       }
   }
 
+  class StringCookie(name: String) {
+    def apply[T](req: HttpRequest[T]): Option[String] = req match {
+      case Cookies(cookies) => cookies(name).headOption.map(_.value)
+    }
+  }
+
+  object TokenCookie extends StringCookie("token")
+
+  object EnvironmentCookie extends StringCookie("environment")
+
+  object AuthCookie {
+    def unapply[T, E](req: HttpRequest[T]) =
+      (EnvironmentCookie(req), TokenCookie(req)) match {
+        case (Some(environment), Some(token)) => EvernoteAuth(environment, token)
+        case _ => None
+      }
+  }
+
 }

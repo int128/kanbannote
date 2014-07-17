@@ -6,7 +6,7 @@ import unfiltered.response._
 
 import scala.collection.JavaConversions._
 
-class App extends unfiltered.filter.Plan with Evernote with CookieSession {
+class App extends unfiltered.filter.Plan with Evernote {
 
   def intent = {
     case GET(Path("/notes")) & AuthHeader(auth) =>
@@ -27,7 +27,6 @@ class App extends unfiltered.filter.Plan with Evernote with CookieSession {
       val note = service.getNoteWithContent(guid)
 
       JsonContent ~>
-        SetCookies(SessionCookie(auth)) ~>
         ResponseString(compact(render(
           ("guid" -> note.getGuid) ~
           ("title" -> note.getTitle) ~
@@ -40,7 +39,7 @@ class App extends unfiltered.filter.Plan with Evernote with CookieSession {
           )))
         )))
 
-    case GET(Path(Seg("resource" :: guid :: Nil))) & SessionCookie(auth: EvernoteAuth) =>
+    case GET(Path(Seg("resource" :: guid :: Nil))) & AuthCookie(auth) =>
       val service = EvernoteService.create(auth)
       val resource = service.getResource(guid)
 
