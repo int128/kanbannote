@@ -14,7 +14,9 @@ sources =
   less:   'src/main/less/**/*'
   static: 'src/main/static/**/*'
 
-target = 'src/main/webapp/'
+targets =
+  gulp: 'src/main/webapp/'
+  appengineDevServer: 'target/webapp/'
 
 gulp.task 'bower', ->
   bower.commands.install().on 'end', (installed) ->
@@ -24,11 +26,13 @@ gulp.task 'bower', ->
         'bower_components/ngstorage/ngStorage.min.js'
       ])
       .pipe(concat('lib.js'))
-      .pipe gulp.dest(target)
+      .pipe(gulp.dest(targets.gulp))
+      .pipe(gulp.dest(targets.appengineDevServer))
     gulp.src([
         'bower_components/bootstrap/dist/**/*'
       ])
-      .pipe gulp.dest(target)
+      .pipe(gulp.dest(targets.gulp))
+      .pipe(gulp.dest(targets.appengineDevServer))
 
 gulp.task 'coffee', ->
   gulp.src(sources.coffee)
@@ -36,17 +40,20 @@ gulp.task 'coffee', ->
     .pipe(ngmin())
     .pipe(uglify())
     .pipe(concat('app.js'))
-    .pipe gulp.dest(target)
+    .pipe(gulp.dest(targets.gulp))
+    .pipe(gulp.dest(targets.appengineDevServer))
 
 gulp.task 'less', ->
   gulp.src(sources.less)
     .pipe(less())
     .pipe(concat('app.css'))
-    .pipe gulp.dest(target)
+    .pipe(gulp.dest(targets.gulp))
+    .pipe(gulp.dest(targets.appengineDevServer))
 
 gulp.task 'static', ->
   gulp.src(sources.static)
-    .pipe gulp.dest(target)
+    .pipe(gulp.dest(targets.gulp))
+    .pipe(gulp.dest(targets.appengineDevServer))
 
 gulp.task 'default', ['clean'], ->
   gulp.start 'bower', 'coffee', 'less', 'static'
@@ -59,8 +66,8 @@ gulp.task 'watch', ->
 
 gulp.task 'server', ['watch'], ->
   connect.server
-    root: target
+    root: targets.gulp
     port: 8888
     livereload: true
 
-gulp.task 'clean', (cb) -> del target, cb
+gulp.task 'clean', (cb) -> del targets.gulp, cb
