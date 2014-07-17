@@ -11,3 +11,6 @@ app.config ($routeProvider) ->
     .otherwise
       templateUrl: 'login.html'
       controller: 'LoginController'
+
+app.filter 'renderNoteContent', ($sce) ->
+  (note) -> $sce.trustAsHtml note?.content

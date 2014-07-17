@@ -1,6 +1,11 @@
 <div>
   <h2>{{note.title}}</h2>
   <h3>Content</h3>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div ng-bind-html="note | renderNoteContent"></div>
+    </div>
+  </div>
   <textarea class="form-control">{{note.content}}</textarea>
   <h3>Resources</h3>
   <div class="list-group">
