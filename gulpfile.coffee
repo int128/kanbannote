@@ -23,6 +23,7 @@ gulp.task 'bower', ->
     gulp.src([
         'bower_components/angular/angular.min.js'
         'bower_components/angular-route/angular-route.min.js'
+        'bower_components/angular-loading-bar/build/loading-bar.min.js'
         'bower_components/ngstorage/ngStorage.min.js'
       ])
       .pipe(concat('lib.js'))
@@ -30,6 +31,7 @@ gulp.task 'bower', ->
       .pipe(gulp.dest(targets.appengineDevServer))
     gulp.src([
         'bower_components/bootstrap/dist/**/*'
+        'bower_components/angular-loading-bar/build/loading-bar.min.css'
       ])
       .pipe(gulp.dest(targets.gulp))
       .pipe(gulp.dest(targets.appengineDevServer))
