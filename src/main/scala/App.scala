@@ -1,3 +1,4 @@
+import models._
 import org.json4s.JsonDSL._
 import org.json4s.native.JsonMethods._
 import services._
@@ -5,9 +6,8 @@ import unfiltered.request._
 import unfiltered.response._
 
 import scala.collection.JavaConversions._
-import scala.util.Random
 
-class App extends unfiltered.filter.Plan with Evernote with Memcache {
+class App extends unfiltered.filter.Plan with Evernote {
 
   def intent = {
     case GET(Path("/notes")) & AuthHeader(auth) =>
@@ -24,9 +24,6 @@ class App extends unfiltered.filter.Plan with Evernote with Memcache {
       )))
 
     case GET(Path(Seg("note" :: guid :: Nil))) & AuthHeader(auth) =>
-      val resourcesAccessKey = Random.alphanumeric.take(32).mkString
-      putCache(resourcesAccessKey, auth)
-
       val service = EvernoteService.create(auth)
       val note = service.getNoteWithContent(guid)
 
@@ -39,16 +36,14 @@ class App extends unfiltered.filter.Plan with Evernote with Memcache {
           ("content" -> note.getContent) ~
           ("resources" -> Option(note.getResources).map(_.map(resource =>
             ("guid" -> resource.getGuid) ~
-            ("mime" -> resource.getMime)
-          ))) ~
-          ("resourcesAccessKey" -> resourcesAccessKey)
+            ("mime" -> resource.getMime) ~
+            ("key" -> ResourceOneTimeKey(resource.getGuid, auth).cache.key)
+          )))
         )))
 
-    case GET(Path(Seg("resource" :: guid :: Nil))) & Params(ResourcesAccessKey(key)) =>
-      getCache[EvernoteAuth](key) match {
-        case Some(auth) =>
-          removeCache(key)
-
+    case GET(Path(Seg("resource" :: guid :: Nil))) & Params(ResourceKeyParam(key)) =>
+      ResourceOneTimeKey.getOnce(key) match {
+        case Some(ResourceOneTimeKey(guidInKey, auth, _)) if guidInKey == guid =>
           val service = EvernoteService.create(auth)
           val resource = service.getResource(guid)
 
@@ -60,6 +55,6 @@ class App extends unfiltered.filter.Plan with Evernote with Memcache {
       }
   }
 
-  object ResourcesAccessKey extends Params.Extract("o", Params.first ~> Params.nonempty)
+  object ResourceKeyParam extends Params.Extract("o", Params.first ~> Params.nonempty)
 
 }

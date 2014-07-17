@@ -1,23 +1,25 @@
+package services
+
 import java.util.logging.Level
 
 import com.google.appengine.api.memcache._
 
-trait Memcache {
+object Memcache {
   private lazy val memcacheService = {
     val s = MemcacheServiceFactory.getMemcacheService
     s.setErrorHandler(ErrorHandlers.getConsistentLogAndContinue(Level.INFO))
     s
   }
 
-  def getCache[T](key: String): Option[T] =
+  def get[T](key: String): Option[T] =
     Option(memcacheService.get(key).asInstanceOf[T])
 
-  def putCache[T](key: String, value: T): T = {
+  def put[T](key: String, value: T): T = {
     memcacheService.put(key, value)
     value
   }
 
-  def removeCache(key: String) = memcacheService.delete(key)
+  def delete(key: String) = memcacheService.delete(key)
 
   /**
    * Get the cached entry or calculate the value.
@@ -27,9 +29,9 @@ trait Memcache {
    * @tparam T type of the value
    * @return cached entry or calculated value
    */
-  def getCacheOrValue[T](key: String, value: => T): T =
-    getCache(key) match {
+  def getOrValue[T](key: String, value: => T): T =
+    get(key) match {
       case Some(cached) => cached
-      case None => putCache(key, value)
+      case None => put(key, value)
     }
 }

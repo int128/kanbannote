@@ -1,5 +1,5 @@
-import services.EvernoteAuth
 
+import models.EvernoteAuth
 import unfiltered.request._
 
 trait Evernote {

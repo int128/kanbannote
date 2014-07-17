@@ -3,7 +3,7 @@
   <textarea class="form-control">{{note.content}}</textarea>
   <ul>
     <li ng-repeat="resource in note.resources">
-      <a href="/resource/{{resource.guid}}?o={{note.resourcesAccessKey}}">
+      <a href="/resource/{{resource.guid}}?o={{resource.key}}">
         {{resource.guid}} ({{resource.mime}})
       </a>
     </li>

@@ -1,4 +1,4 @@
-package services
+package models
 
 import scala.util.control.Exception._
 

@@ -4,6 +4,7 @@ import com.evernote.clients.ClientFactory
 import com.evernote.edam.`type`.NoteSortOrder
 import com.evernote.edam.notestore.NoteFilter
 import com.evernote.edam.userstore.Constants._
+import models.EvernoteAuth
 
 case class EvernoteService(factory: ClientFactory) {
 
