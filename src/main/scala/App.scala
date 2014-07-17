@@ -44,9 +44,11 @@ class App extends unfiltered.filter.Plan with Evernote with Memcache {
           ("resourcesAccessKey" -> resourcesAccessKey)
         )))
 
-    case GET(Path(Seg("resource" :: guid :: Nil))) & ResourcesAccessKey(key) =>
+    case GET(Path(Seg("resource" :: guid :: Nil))) & Params(ResourcesAccessKey(key)) =>
       getCache[EvernoteAuth](key) match {
         case Some(auth) =>
+          removeCache(key)
+
           val service = EvernoteService.create(auth)
           val resource = service.getResource(guid)
 
@@ -58,12 +60,6 @@ class App extends unfiltered.filter.Plan with Evernote with Memcache {
       }
   }
 
-  object ResourcesAccessKey extends StringCookie("resourcesAccessKey")
-
-  class StringCookie(name: String) {
-    def unapply[T](req: HttpRequest[T]): Option[String] = req match {
-      case Cookies(cookies) => cookies(name).headOption.map(_.value)
-    }
-  }
+  object ResourcesAccessKey extends Params.Extract("o", Params.first ~> Params.nonempty)
 
 }

@@ -17,6 +17,8 @@ trait Memcache {
     value
   }
 
+  def removeCache(key: String) = memcacheService.delete(key)
+
   /**
    * Get the cached entry or calculate the value.
    *
