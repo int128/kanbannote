@@ -26,6 +26,9 @@ case class EvernoteService(factory: ClientFactory) {
     noteStore.getNote(guid, true, false, false, false)
   }
 
+  def getResource(guid: String) =
+    noteStore.getResource(guid, true, false, false, false)
+
 }
 
 object EvernoteService {

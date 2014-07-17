@@ -37,6 +37,14 @@ class App extends unfiltered.filter.Plan with Evernote {
           ("mime" -> resource.getMime)
         )))
       )))
+
+    case GET(Path(Seg("resource" :: guid :: Nil))) & EvernoteAuth(auth) =>
+      val service = EvernoteService.create(auth)
+      val resource = service.getResource(guid)
+
+      ContentType(resource.getMime) ~>
+        ContentLength(resource.getData.getSize.toString) ~>
+        ResponseBytes(resource.getData.getBody)
   }
 
 }
