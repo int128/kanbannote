@@ -2,7 +2,7 @@ import services.EvernoteAuth
 
 import unfiltered.request._
 
-trait Evernote {
+trait Evernote extends CookieSupport {
 
   object TokenHeader extends StringHeader("X-EN-Token")
 
@@ -14,12 +14,6 @@ trait Evernote {
         case (Some(environment), Some(token)) => EvernoteAuth(environment, token)
         case _ => None
       }
-  }
-
-  class StringCookie(name: String) {
-    def apply[T](req: HttpRequest[T]): Option[String] = req match {
-      case Cookies(cookies) => cookies(name).headOption.map(_.value)
-    }
   }
 
   object TokenCookie extends StringCookie("token")
