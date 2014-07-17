@@ -24,6 +24,16 @@
         </auth-constraint>
     </security-constraint>
 
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>whole</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
     <!-- Uncomment the following security constraint if you want to secure your incoming email endpoint -->
     <!-- Only allow the SDK and administrators to have access to the incoming email endpoint -->
     <!--
