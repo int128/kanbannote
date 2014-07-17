@@ -1,5 +1,6 @@
 package models
 
+import com.google.appengine.api.memcache.Expiration
 import services.Memcache
 
 import scala.util.Random
@@ -9,7 +10,7 @@ case class ResourceOneTimeKey(guid: String,
                               key: String = Random.alphanumeric.take(64).mkString) {
 
   def cache: ResourceOneTimeKey = {
-    Memcache.put(key, this)
+    Memcache.put(key, this, Expiration.byDeltaSeconds(3600))
     this
   }
 

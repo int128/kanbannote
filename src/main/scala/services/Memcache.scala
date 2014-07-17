@@ -19,6 +19,11 @@ object Memcache {
     value
   }
 
+  def put[T](key: String, value: T, expiration: Expiration): T = {
+    memcacheService.put(key, value, expiration)
+    value
+  }
+
   def delete(key: String) = memcacheService.delete(key)
 
   /**
