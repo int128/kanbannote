@@ -1,13 +1,14 @@
 <div>
-  <h2>{{note.title}}</h2>
-  <h3>Content</h3>
+  <ol class="breadcrumb">
+    <li><a href="/">Login</a></li>
+    <li><a href="/#/notes">Notes</a></li>
+    <li class="active">{{note.title}}</li>
+  </ol>
   <div class="panel panel-default">
     <div class="panel-body">
       <div ng-bind-html="note | renderNoteContent"></div>
     </div>
   </div>
-  <textarea class="form-control">{{note.content}}</textarea>
-  <h3>Resources</h3>
   <div class="list-group">
     <a ng-repeat="resource in note.resources"
        href="/resource/{{resource.guid}}?o={{resource.key}}"
