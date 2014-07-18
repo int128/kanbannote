@@ -12,11 +12,7 @@ controllers.controller 'NotesController', ($scope, Note) ->
 controllers.controller 'NoteController', ($scope, $routeParams, Note) ->
   Note.get($routeParams.guid).success (note) ->
     $scope.note = note
-  Note.list().success (notes) ->
-    $scope.notes = notes
 
 controllers.controller 'NoteEditController', ($scope, $routeParams, Note) ->
   Note.get($routeParams.guid).success (note) ->
     $scope.note = note
-  Note.list().success (notes) ->
-    $scope.notes = notes

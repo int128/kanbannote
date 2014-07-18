@@ -1,38 +1,27 @@
-<div class="note-page row">
-  <div class="col-md-2">
-    <div class="note-list list-group">
-      <a ng-repeat="item in notes"
-         href="#/note/{{item.guid}}"
-         class="list-group-item {{item.guid == note.guid ? 'active' : ''}}">
-        {{item.title}}
-      </a>
+<div class="note-page">
+  <div class="panel panel-default">
+    <div class="panel-heading">{{note.title}}</div>
+    <div class="panel-body">
+      <div class="pull-right">
+        <a href="#/note/{{note.guid}}/edit">Edit</a>
+      </div>
+      <div ng-bind-html="note | renderNoteContent"></div>
     </div>
   </div>
-  <div class="col-md-10">
-    <div class="panel panel-default">
-      <div class="panel-heading">{{note.title}}</div>
-      <div class="panel-body">
-        <div class="pull-right">
-          <a href="#/note/{{note.guid}}/edit">Edit</a>
+  <div class="list-group">
+    <a ng-repeat="resource in note.resources"
+       href="/resource/{{resource.guid}}?o={{resource.key}}"
+       class="list-group-item">
+      <span class="label label-info">{{resource.mime}}</span>
+      {{resource.guid}}
+    </a>
+    <div class="list-group-item">
+      <form role="form">
+        <div class="form-group">
+          <input type="file" />
         </div>
-        <div ng-bind-html="note | renderNoteContent"></div>
-      </div>
-    </div>
-    <div class="list-group">
-      <a ng-repeat="resource in note.resources"
-         href="/resource/{{resource.guid}}?o={{resource.key}}"
-         class="list-group-item">
-        <span class="label label-info">{{resource.mime}}</span>
-        {{resource.guid}}
-      </a>
-      <div class="list-group-item">
-        <form role="form">
-          <div class="form-group">
-            <input type="file" />
-          </div>
-          <button type="button" class="btn btn-default">Add the resource</button>
-        </form>
-      </div>
+        <button type="button" class="btn btn-default">Add the resource</button>
+      </form>
     </div>
   </div>
 </div>

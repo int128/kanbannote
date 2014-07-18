@@ -1,20 +1,9 @@
-<div class="note-page row">
-  <div class="col-md-2">
-    <div class="note-list list-group">
-      <a ng-repeat="item in notes"
-         href="#/note/{{item.guid}}"
-         class="list-group-item {{item.guid == note.guid ? 'active' : ''}}">
-        {{item.title}}
-      </a>
+<div class="note-edit-page">
+  <p>{{note.title}}</p>
+  <form role="form">
+    <div class="form-group">
+      <textarea rows="10" class="form-control">{{note.content}}</textarea>
     </div>
-  </div>
-  <div class="col-md-10">
-    <p>{{note.title}}</p>
-    <form role="form">
-      <div class="form-group">
-        <textarea rows="10" class="form-control">{{note.content}}</textarea>
-      </div>
-      <button type="button" class="btn btn-default">Save</button>
-    </form>
-  </div>
+    <button type="button" class="btn btn-default">Save</button>
+  </form>
 </div>
