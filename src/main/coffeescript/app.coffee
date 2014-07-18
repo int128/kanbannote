@@ -8,6 +8,9 @@ app.config ($routeProvider) ->
     .when '/note/:guid',
       templateUrl: 'note.html'
       controller: 'NoteController'
+    .when '/note/:guid/edit',
+      templateUrl: 'note-edit.html'
+      controller: 'NoteEditController'
     .otherwise
       templateUrl: 'login.html'
       controller: 'LoginController'
