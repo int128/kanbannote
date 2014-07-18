@@ -1,20 +1,27 @@
-<div>
-  <ol class="breadcrumb">
-    <li><a href="/">Login</a></li>
-    <li><a href="/#/notes">Notes</a></li>
-    <li class="active">{{note.title}}</li>
-  </ol>
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <div ng-bind-html="note | renderNoteContent"></div>
+<div class="note-page row">
+  <div class="col-md-2">
+    <div class="note-list list-group">
+      <a ng-repeat="item in notes"
+         href="#/note/{{item.guid}}"
+         class="list-group-item {{item.guid == note.guid ? 'active' : ''}}">
+        {{item.title}}
+      </a>
     </div>
   </div>
-  <div class="list-group">
-    <a ng-repeat="resource in note.resources"
-       href="/resource/{{resource.guid}}?o={{resource.key}}"
-       class="list-group-item">
-      <span class="label label-info">{{resource.mime}}</span>
-      {{resource.guid}}
-    </a>
+  <div class="col-md-10">
+    <div class="panel panel-default">
+      <div class="panel-heading">{{note.title}}</div>
+      <div class="panel-body">
+        <div ng-bind-html="note | renderNoteContent"></div>
+      </div>
+    </div>
+    <div class="list-group">
+      <a ng-repeat="resource in note.resources"
+         href="/resource/{{resource.guid}}?o={{resource.key}}"
+         class="list-group-item">
+        <span class="label label-info">{{resource.mime}}</span>
+        {{resource.guid}}
+      </a>
+    </div>
   </div>
 </div>
