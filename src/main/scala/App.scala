@@ -35,11 +35,7 @@ class App extends unfiltered.filter.Plan with Evernote {
           ("created" -> note.getCreated.toString) ~
           ("updated" -> note.getUpdated.toString) ~
           ("content" -> note.getContent) ~
-          ("resources" -> Option(note.getResources).map(_.map(resource =>
-            ("guid" -> resource.getGuid) ~
-            ("mime" -> resource.getMime) ~
-            ("key" -> ResourceOneTimeKey(resource.getGuid, auth).cache.key)
-          )))
+          ResourcesElement(note)(auth)
         )))
 
     case POST(Path(Seg("note" :: guid :: "resource" :: Nil)) & MultiPart(req)) & AuthHeader(auth) =>
@@ -51,11 +47,7 @@ class App extends unfiltered.filter.Plan with Evernote {
           JsonContent ~>
             ResponseString(compact(render(
               ("guid" -> note.getGuid) ~
-              ("resources" -> Option(note.getResources).map(_.map(resource =>
-                ("guid" -> resource.getGuid) ~
-                ("mime" -> resource.getMime) ~
-                ("key" -> ResourceOneTimeKey(resource.getGuid, auth).cache.key)
-              )))
+              ResourcesElement(note)(auth)
             )))
 
         case _ => BadRequest
@@ -76,5 +68,16 @@ class App extends unfiltered.filter.Plan with Evernote {
   }
 
   object ResourceKeyParam extends Params.Extract("o", Params.first ~> Params.nonempty)
+
+  object ResourcesElement {
+    import com.evernote.edam.`type`.Note
+    def apply(note: Note)(auth: EvernoteAuth) =
+      "resources" -> Option(note.getResources).map(_.map(resource =>
+        ("guid" -> resource.getGuid) ~
+        ("fileName" -> Option(resource.getAttributes).map(_.getFileName)) ~
+        ("fileSize" -> Option(resource.getData).map(_.getSize)) ~
+        ("mime" -> resource.getMime) ~
+        ("key" -> ResourceOneTimeKey(resource.getGuid, auth).cache.key)))
+  }
 
 }

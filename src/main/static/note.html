@@ -12,8 +12,9 @@
     <a ng-repeat="resource in note.resources"
        href="/resource/{{resource.guid}}?o={{resource.key}}"
        class="list-group-item">
-      <span class="label label-info">{{resource.mime}}</span>
-      {{resource.guid}}
+      <span class="badge">{{resource.fileSize | number}} bytes</span>
+      <span class="badge">{{resource.mime}}</span>
+      {{resource.fileName}}
     </a>
     <div ng-file-drop="onFileSelect($files)"
          ng-file-drag-over-class="'list-group-item-info'"
