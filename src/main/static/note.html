@@ -8,17 +8,28 @@
       <div ng-bind-html="note | renderNoteContent"></div>
     </div>
   </div>
-  <div class="list-group">
-    <a ng-repeat="resource in note.resources"
-       href="/resource/{{resource.guid}}/{{resource.fileName}}?o={{resource.key}}"
-       class="list-group-item">
-      <div class="pull-left">{{resource.fileName}}</div>
-      <div class="pull-right">{{resource.mime}} - {{resource.fileSize | number}} bytes</div>
+  <ul class="list-group">
+    <li ng-repeat="resource in note.resources"
+        ng-class="{disabled: resource.removing}"
+        class="list-group-item">
+      <div class="pull-left">
+        <a href="/resource/{{resource.guid}}/{{resource.fileName}}?o={{resource.key}}">
+          {{resource.fileName}}
+          - {{resource.mime}}
+          - {{resource.fileSize | number}} bytes
+        </a>
+      </div>
+      <div class="pull-right">
+        <button ng-click="removeResource(resource)" type="button" class="close">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Remove</span>
+        </button>
+      </div>
       <div class="clearfix"></div>
-    </a>
-    <div ng-file-drop="onFileSelect($files)"
-         ng-file-drag-over-class="'list-group-item-info'"
-         class="list-group-item">
+    </li>
+    <li ng-file-drop="onFileSelect($files)"
+        ng-file-drag-over-class="'list-group-item-info'"
+        class="list-group-item">
       <form class="form-inline" role="form">
         <div class="form-group">
           <strong>Add resources:</strong>
@@ -28,6 +39,6 @@
           <input type="file" ng-file-select="onFileSelect($files)" />
         </div>
       </form>
-    </div>
-  </div>
+    </li>
+  </ul>
 </div>

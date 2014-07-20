@@ -23,3 +23,9 @@ services.factory 'Note', ($http, $upload, authStorage) ->
           'X-EN-Environment': authStorage.environment
         file: file
       .success onSuccess
+  removeResource: (noteId, resourceId, onSuccess) ->
+    $http.delete "/note/#{noteId}/resource/#{resourceId}",
+      headers:
+        'X-EN-Token': authStorage.token
+        'X-EN-Environment': authStorage.environment
+    .success onSuccess

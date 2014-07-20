@@ -6,6 +6,8 @@ import com.evernote.edam.notestore.NoteFilter
 import com.evernote.edam.userstore.Constants._
 import models.EvernoteAuth
 
+import scala.collection.JavaConversions._
+
 case class EvernoteService(factory: ClientFactory) {
 
   lazy val userStore = factory.createUserStoreClient()
@@ -45,6 +47,17 @@ case class EvernoteService(factory: ClientFactory) {
     patch.setTitle(note.getTitle)
     patch.setResources(note.getResources)
     patch.addToResources(resource)
+
+    noteStore.updateNote(patch)
+  }
+
+  def removeResource(noteId: String, resourceId: String) = {
+    val note = noteStore.getNote(noteId, false, false, false, false)
+
+    val patch = new Note()
+    patch.setGuid(note.getGuid)
+    patch.setTitle(note.getTitle)
+    patch.setResources(note.getResources.filterNot(_.getGuid == resourceId))
 
     noteStore.updateNote(patch)
   }

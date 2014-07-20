@@ -14,6 +14,12 @@ controllers.controller 'NoteController', ($scope, $routeParams, Note) ->
     Note.addResources $routeParams.guid, $files, (note) ->
       $scope.note.resources = note.resources
       $scope.note = $scope.note
+  $scope.removeResource = (resource) ->
+    resource.removing = true
+    Note.removeResource $routeParams.guid, resource.guid, (note) ->
+      resource.removing = false
+      $scope.note.resources = note.resources
+      $scope.note = $scope.note
   Note.get($routeParams.guid).success (note) ->
     $scope.note = note
 

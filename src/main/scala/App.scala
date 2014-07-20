@@ -53,6 +53,16 @@ class App extends unfiltered.filter.Plan with Evernote {
         case _ => BadRequest
       }
 
+    case DELETE(Path(Seg("note" :: noteId :: "resource" :: resourceId :: Nil))) & AuthHeader(auth) =>
+      val service = EvernoteService.create(auth)
+      val note = service.removeResource(noteId, resourceId)
+
+      JsonContent ~>
+        ResponseString(compact(render(
+          ("guid" -> note.getGuid) ~
+          ResourcesElement(note)(auth)
+        )))
+
     case GET(Path(Seg("resource" :: guid :: _ :: Nil))) & Params(ResourceKeyParam(key)) =>
       ResourceOneTimeKey.getOnce(key) match {
         case Some(ResourceOneTimeKey(guidInKey, auth, _)) if guidInKey == guid =>
