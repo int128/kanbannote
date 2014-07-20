@@ -2,6 +2,7 @@ import models._
 import org.json4s.JsonDSL._
 import org.json4s.native.JsonMethods._
 import services._
+import unfiltered.filter.request._
 import unfiltered.request._
 import unfiltered.response._
 
@@ -40,6 +41,20 @@ class App extends unfiltered.filter.Plan with Evernote {
             ("key" -> ResourceOneTimeKey(resource.getGuid, auth).cache.key)
           )))
         )))
+
+    case POST(Path(Seg("note" :: guid :: "resource" :: Nil)) & MultiPart(req)) & AuthHeader(auth) =>
+      MultiPartParams.Streamed(req).files("file") match {
+        case Seq(file, _*) =>
+          val service = EvernoteService.create(auth)
+          // TODO: service.addResource(...)
+          JsonContent ~>
+            ResponseString(compact(render(
+              ("filename" -> file.name) ~
+              ("mime" -> file.contentType)
+            )))
+
+        case _ => BadRequest
+      }
 
     case GET(Path(Seg("resource" :: guid :: Nil))) & Params(ResourceKeyParam(key)) =>
       ResourceOneTimeKey.getOnce(key) match {
