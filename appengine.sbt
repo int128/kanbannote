@@ -6,3 +6,14 @@ libraryDependencies ++= Seq(
 )
 
 appengineSettings
+
+lazy val reloadDevServer = taskKey[Unit]("Reloads App Engine development server")
+
+reloadDevServer := {
+  (webappResources in Compile).value.foreach { webappResource =>
+    val appengineWebXml = webappResource / "WEB-INF" / "appengine-web.xml"
+    appengineWebXml.setLastModified(System.currentTimeMillis())
+  }
+}
+
+packageWar <<= (packageWar in Compile) dependsOn reloadDevServer
