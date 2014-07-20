@@ -20,3 +20,16 @@ app.filter 'renderNoteContent', ($sce) ->
 
 app.filter 'orElse', ->
   (value, otherwise) -> value ? otherwise
+
+app.directive 'ngCkeditor', ($window) ->
+  link: (scope, element, attrs) ->
+    attrs.$set 'contenteditable', 'true'
+    $window.CKEDITOR.disableAutoInline = true
+    $window.CKEDITOR.inline element[0]
+
+app.directive 'ngDomUpdate', ($window) ->
+  link: (scope, element, attrs) ->
+    element.on 'blur', ->
+      scope.$html = element[0].innerHTML
+      scope.$apply ->
+        scope.$eval attrs.ngDomUpdate

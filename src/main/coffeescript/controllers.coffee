@@ -26,3 +26,5 @@ controllers.controller 'NoteController', ($scope, $routeParams, Note) ->
 controllers.controller 'NoteEditController', ($scope, $routeParams, Note) ->
   Note.get($routeParams.guid).success (note) ->
     $scope.note = note
+  $scope.refresh = (html) ->
+    $scope.note.content = html

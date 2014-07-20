@@ -1,9 +1,14 @@
 <div class="note-edit-page">
-  <p>{{note.title}}</p>
+  <div class="panel panel-default">
+    <div class="panel-heading">{{note.title}}</div>
+    <div class="panel-body">
+      <div ng-ckeditor ng-bind-html="note | renderNoteContent" ng-dom-update="refresh($html)"></div>
+    </div>
+  </div>
   <form role="form">
     <div class="form-group">
-      <textarea rows="10" class="form-control">{{note.content}}</textarea>
+      <textarea ng-model="note.content" rows="10" class="form-control" id="editor"></textarea>
     </div>
-    <button type="button" class="btn btn-default">Save</button>
+    <button ng-click="" type="button" class="btn btn-default">Save</button>
   </form>
 </div>
