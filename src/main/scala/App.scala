@@ -53,7 +53,7 @@ class App extends unfiltered.filter.Plan with Evernote {
         case _ => BadRequest
       }
 
-    case GET(Path(Seg("resource" :: guid :: Nil))) & Params(ResourceKeyParam(key)) =>
+    case GET(Path(Seg("resource" :: guid :: _ :: Nil))) & Params(ResourceKeyParam(key)) =>
       ResourceOneTimeKey.getOnce(key) match {
         case Some(ResourceOneTimeKey(guidInKey, auth, _)) if guidInKey == guid =>
           val service = EvernoteService.create(auth)

@@ -10,7 +10,7 @@
   </div>
   <div class="list-group">
     <a ng-repeat="resource in note.resources"
-       href="/resource/{{resource.guid}}?o={{resource.key}}"
+       href="/resource/{{resource.guid}}/{{resource.fileName}}?o={{resource.key}}"
        class="list-group-item">
       <span class="badge">{{resource.fileSize | number}} bytes</span>
       <span class="badge">{{resource.mime}}</span>
