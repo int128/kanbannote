@@ -25,6 +25,7 @@ gulp.task 'bower', ->
         'bower_components/angular-route/angular-route.min.js'
         'bower_components/angular-loading-bar/build/loading-bar.min.js'
         'bower_components/ngstorage/ngStorage.min.js'
+        'bower_components/ng-file-upload/angular-file-upload.min.js'
       ])
       .pipe(concat('lib.js'))
       .pipe(gulp.dest(targets.gulp))
