@@ -13,8 +13,8 @@
         ng-class="{disabled: resource.removing}"
         class="list-group-item">
       <div class="pull-left">
-        <a href="/resource/{{resource.guid}}/{{resource.fileName}}?o={{resource.key}}">
-          {{resource.fileName}}
+        <a href="/resource/{{resource.guid}}/{{resource.fileName | orElse: resource.guid}}?o={{resource.key}}">
+          {{resource.fileName | orElse: resource.guid}}
           - {{resource.mime}}
           - {{resource.fileSize | number}} bytes
         </a>

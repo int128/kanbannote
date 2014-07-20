@@ -17,3 +17,6 @@ app.config ($routeProvider) ->
 
 app.filter 'renderNoteContent', ($sce) ->
   (note) -> $sce.trustAsHtml note?.content
+
+app.filter 'orElse', ->
+  (value, otherwise) -> value ? otherwise
