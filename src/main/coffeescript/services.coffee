@@ -14,7 +14,7 @@ services.factory 'Note', ($http, $upload, authStorage) ->
       headers:
         'X-EN-Token': authStorage.token
         'X-EN-Environment': authStorage.environment
-  addResources: (guid, files) ->
+  addResources: (guid, files, onSuccess) ->
     files.forEach (file) ->
       $upload.upload
         url: "/note/#{guid}/resource"
@@ -22,3 +22,4 @@ services.factory 'Note', ($http, $upload, authStorage) ->
           'X-EN-Token': authStorage.token
           'X-EN-Environment': authStorage.environment
         file: file
+      .success onSuccess

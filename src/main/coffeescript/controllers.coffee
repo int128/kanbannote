@@ -11,7 +11,9 @@ controllers.controller 'NotesController', ($scope, Note) ->
 
 controllers.controller 'NoteController', ($scope, $routeParams, Note) ->
   $scope.onFileSelect = ($files) ->
-    Note.addResources $routeParams.guid, $files
+    Note.addResources $routeParams.guid, $files, (note) ->
+      $scope.note.resources = note.resources
+      $scope.note = $scope.note
   Note.get($routeParams.guid).success (note) ->
     $scope.note = note
 
