@@ -15,12 +15,17 @@
       <span class="label label-info">{{resource.mime}}</span>
       {{resource.guid}}
     </a>
-    <div class="list-group-item">
-      <form role="form">
+    <div ng-file-drop="onFileSelect($files)"
+         ng-file-drag-over-class="'list-group-item-info'"
+         class="list-group-item">
+      <form class="form-inline" role="form">
         <div class="form-group">
-          <input type="file" />
+          <strong>Add resources:</strong>
+          Drop files here or
         </div>
-        <button type="button" class="btn btn-default">Add the resource</button>
+        <div class="form-group">
+          <input type="file" ng-file-select="onFileSelect($files)" />
+        </div>
       </form>
     </div>
   </div>
