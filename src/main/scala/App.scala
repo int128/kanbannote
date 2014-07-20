@@ -43,14 +43,19 @@ class App extends unfiltered.filter.Plan with Evernote {
         )))
 
     case POST(Path(Seg("note" :: guid :: "resource" :: Nil)) & MultiPart(req)) & AuthHeader(auth) =>
-      MultiPartParams.Streamed(req).files("file") match {
+      MultiPartParams.Memory(req).files("file") match {
         case Seq(file, _*) =>
           val service = EvernoteService.create(auth)
-          // TODO: service.addResource(...)
+          val note = service.addResourceToNote(guid, file.name, file.contentType, file.bytes)
+
           JsonContent ~>
             ResponseString(compact(render(
-              ("filename" -> file.name) ~
-              ("mime" -> file.contentType)
+              ("guid" -> note.getGuid) ~
+              ("resources" -> Option(note.getResources).map(_.map(resource =>
+                ("guid" -> resource.getGuid) ~
+                ("mime" -> resource.getMime) ~
+                ("key" -> ResourceOneTimeKey(resource.getGuid, auth).cache.key)
+              )))
             )))
 
         case _ => BadRequest

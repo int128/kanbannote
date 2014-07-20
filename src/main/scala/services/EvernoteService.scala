@@ -1,7 +1,7 @@
 package services
 
 import com.evernote.clients.ClientFactory
-import com.evernote.edam.`type`.NoteSortOrder
+import com.evernote.edam.`type`._
 import com.evernote.edam.notestore.NoteFilter
 import com.evernote.edam.userstore.Constants._
 import models.EvernoteAuth
@@ -27,6 +27,27 @@ case class EvernoteService(factory: ClientFactory) {
 
   def getResource(guid: String) =
     noteStore.getResource(guid, true, false, false, false)
+
+  def addResourceToNote(guid: String, fileName: String, mime: String, bytes: Array[Byte]) = {
+    val note = noteStore.getNote(guid, false, false, false, false)
+
+    val data = new Data()
+    data.setBody(bytes)
+    val resourceAttributes = new ResourceAttributes()
+    resourceAttributes.setFileName(fileName)
+    val resource = new Resource()
+    resource.setData(data)
+    resource.setAttributes(resourceAttributes)
+    resource.setMime(mime)
+
+    val patch = new Note()
+    patch.setGuid(note.getGuid)
+    patch.setTitle(note.getTitle)
+    patch.setResources(note.getResources)
+    patch.addToResources(resource)
+
+    noteStore.updateNote(patch)
+  }
 
 }
 
