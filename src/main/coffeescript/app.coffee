@@ -15,8 +15,8 @@ app.config ($routeProvider) ->
       templateUrl: 'login.html'
       controller: 'LoginController'
 
-app.filter 'renderNoteContent', ($sce) ->
-  (note) -> $sce.trustAsHtml note?.content
+app.filter 'asHtml', ($sce) ->
+  (value) -> $sce.trustAsHtml value
 
 app.filter 'orElse', ->
   (value, otherwise) -> value ? otherwise
@@ -27,9 +27,9 @@ app.directive 'ngCkeditor', ($window) ->
     $window.CKEDITOR.disableAutoInline = true
     $window.CKEDITOR.inline element[0]
 
-app.directive 'ngDomUpdate', ($window) ->
+app.directive 'ngHtmlUpdate', ($window) ->
   link: (scope, element, attrs) ->
     element.on 'blur', ->
       scope.$html = element[0].innerHTML
       scope.$apply ->
-        scope.$eval attrs.ngDomUpdate
+        scope.$eval attrs.ngHtmlUpdate

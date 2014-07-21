@@ -2,7 +2,9 @@
   <div class="panel panel-default">
     <div class="panel-heading">{{note.title}}</div>
     <div class="panel-body">
-      <div ng-ckeditor ng-bind-html="note | renderNoteContent" ng-dom-update="refresh($html)"></div>
+      <div ng-ckeditor
+           ng-bind-html="note.content | asHtml"
+           ng-html-update="note.content = $html"></div>
     </div>
   </div>
   <form role="form">

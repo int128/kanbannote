@@ -5,7 +5,7 @@
       <div class="pull-right">
         <a href="#/note/{{note.guid}}/edit">Edit</a>
       </div>
-      <div ng-bind-html="note | renderNoteContent"></div>
+      <div ng-bind-html="note.content | asHtml"></div>
     </div>
   </div>
   <ul class="list-group">
