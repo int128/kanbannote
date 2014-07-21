@@ -27,6 +27,14 @@ case class EvernoteService(factory: ClientFactory) {
   def getNoteWithContent(guid: String) =
     noteStore.getNote(guid, true, false, false, false)
 
+  def updateNote(guid: String, title: String, content: String) = {
+    val note = new Note()
+    note.setGuid(guid)
+    note.setTitle(title)
+    note.setContent(content)
+    noteStore.updateNote(note)
+  }
+
   def getResource(guid: String) =
     noteStore.getResource(guid, true, false, false, false)
 
@@ -70,23 +78,5 @@ object EvernoteService {
     EvernoteService(
       new ClientFactory(
         new com.evernote.auth.EvernoteAuth(auth.environment, auth.token)))
-
-  object ENML {
-    import scala.xml.Elem
-    import scala.xml.factory.XMLLoader
-
-    private object XML extends XMLLoader[Elem] {
-      import javax.xml.parsers.{SAXParser, SAXParserFactory}
-
-      override def parser: SAXParser = {
-        val f = SAXParserFactory.newInstance()
-        f.setValidating(false)
-        f.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
-        f.newSAXParser()
-      }
-    }
-
-    def htmlize(enml: String): String = XML.loadString(enml).child.mkString
-  }
 
 }

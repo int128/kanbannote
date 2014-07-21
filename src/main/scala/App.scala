@@ -32,18 +32,23 @@ class App extends unfiltered.filter.Plan with Evernote {
           ("title" -> note.getTitle) ~
           ("created" -> note.getCreated.toString) ~
           ("updated" -> note.getUpdated.toString) ~
-          ("content" -> ENML.htmlize(note.getContent)) ~
+          ("content" -> NoteContentResponse(note.getContent)) ~
           ResourcesElement(note)(auth)
         )
 
-    case POST(Path(Seg("note" :: guid :: Nil))) & AuthHeader(auth) =>
+    case req @ POST(Path(Seg("note" :: guid :: Nil))) & AuthHeader(auth) =>
+      import org.json4s.JsonAST._
+
+      val json = parse(Body.string(req))
+      val JString(title) = json \ "title"
+      val JString(content) = json \ "content"
+      val note = EvernoteService(auth).updateNote(guid, title, NoteContentRequest(content))
       JsonContent ~>
         JsonResponse(
-          ("guid" -> guid) ~
-          ("title" -> "TODO") ~
-          ("content" -> "TODO")
-          // TODO
-        )
+          ("guid" -> note.getGuid) ~
+          ("title" -> note.getTitle) ~
+          ("created" -> note.getCreated.toString) ~
+          ("updated" -> note.getUpdated.toString))
 
     case POST(Path(Seg("note" :: guid :: "resource" :: Nil)) & MultiPart(req)) & AuthHeader(auth) =>
       MultiPartParams.Memory(req).files("file") match {
