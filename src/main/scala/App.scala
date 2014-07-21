@@ -1,7 +1,6 @@
 import models._
 import org.json4s.JsonDSL._
 import org.json4s.native.JsonMethods._
-import services.EvernoteService.ENML
 import services._
 import unfiltered.filter.request._
 import unfiltered.request._

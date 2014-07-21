@@ -27,9 +27,12 @@ app.directive 'ngCkeditor', ($window) ->
     $window.CKEDITOR.disableAutoInline = true
     $window.CKEDITOR.inline element[0]
 
-app.directive 'ngHtmlUpdate', ($window) ->
+app.directive 'ngXmlUpdate', ($window) ->
+  serializer = new XMLSerializer()
   link: (scope, element, attrs) ->
     element.on 'blur', ->
-      scope.$html = element[0].innerHTML
+      scope.$xml = serializer
+        .serializeToString element[0].firstChild
+        .replace ///xmlns=".+?"///, ''
       scope.$apply ->
-        scope.$eval attrs.ngHtmlUpdate
+        scope.$eval attrs.ngXmlUpdate
