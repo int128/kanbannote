@@ -1,16 +1,74 @@
-<div class="alert alert-info" role="alert">OAuth 2.0 login is not implemented yet</div>
+<div class="row">
+  <div class="col-md-4 lane lane-todo">
+    <h3>To Do</h3>
 
-<div>
-  <form class="form-inline">
-    <div class="form-group">
-      <button type="button" ng-click="loginWithToken()" class="btn btn-default">Login</button>
-      with a token
-      <input type="text" ng-model="$storage.token" placeholder="Token" class="form-control" />
-      on the environment
-      <select ng-model="$storage.environment" class="form-control">
-        <option value="PRODUCTION">Production</option>
-        <option value="SANDBOX">Sandbox</option>
-      </select>
+    <div class="panel panel-default">
+      <div class="panel-heading">Authentication</div>
+      <div class="panel-body">
+        <p>As a user, I can login with an external authority.</p>
+        <div class="alert alert-info">
+          <strong>Not implement yet:</strong>
+          Please login with your developer token in right box.
+        </div>
+      </div>
     </div>
-  </form>
+
+  </div>
+  <div class="col-md-4 lane lane-wip">
+    <h3>Doing</h3>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">Try on Production</div>
+      <div class="panel-body">
+        <form ng-submit="loginWithToken(tokenProduction, 'PRODUCTION')" role="form">
+          <div class="form-group">
+            <input type="password" ng-model="tokenProduction" placeholder="Token" class="form-control" />
+          </div>
+          <button ng-disabled="!tokenProduction" type="submit" class="btn btn-default">
+            <span class="glyphicon glyphicon-log-in"></span> Login
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">Try on Sandbox</div>
+      <div class="panel-body">
+        <form ng-submit="loginWithToken(tokenSandbox, 'SANDBOX')" role="form">
+          <div class="form-group">
+            <input type="password" ng-model="tokenSandbox" placeholder="Token" class="form-control" />
+          </div>
+          <button ng-disabled="!tokenSandbox" type="submit" class="btn btn-default">
+            <span class="glyphicon glyphicon-log-in"></span> Login
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+  <div class="col-md-4 lane lane-done">
+    <h3>Done</h3>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">See notes</div>
+      <div class="panel-body">
+        <p>As a user, I can see list of my notes.</p>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">Show note</div>
+      <div class="panel-body">
+        <p>As a user, I can see the note.</p>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">Edit note content</div>
+      <div class="panel-body">
+        <p>As a user, I can edit the content of note.</p>
+      </div>
+    </div>
+
+  </div>
 </div>
