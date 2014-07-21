@@ -1,6 +1,7 @@
 import models._
 import org.json4s.JsonDSL._
 import org.json4s.native.JsonMethods._
+import services.EvernoteService.ENML
 import services._
 import unfiltered.filter.request._
 import unfiltered.request._
@@ -34,7 +35,7 @@ class App extends unfiltered.filter.Plan with Evernote {
           ("title" -> note.getTitle) ~
           ("created" -> note.getCreated.toString) ~
           ("updated" -> note.getUpdated.toString) ~
-          ("content" -> note.getContent) ~
+          ("content" -> ENML.htmlize(note.getContent)) ~
           ResourcesElement(note)(auth)
         )))
 

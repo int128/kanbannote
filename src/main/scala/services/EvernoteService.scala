@@ -71,4 +71,22 @@ object EvernoteService {
       new ClientFactory(
         new com.evernote.auth.EvernoteAuth(auth.environment, auth.token)))
 
+  object ENML {
+    import javax.xml.parsers.{SAXParser, SAXParserFactory}
+
+import scala.xml.Elem
+    import scala.xml.factory.XMLLoader
+
+    private object XML extends XMLLoader[Elem] {
+      override def parser: SAXParser = {
+        val f = SAXParserFactory.newInstance()
+        f.setValidating(false)
+        f.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
+        f.newSAXParser()
+      }
+    }
+
+    def htmlize(enml: String): String = XML.loadString(enml).child.mkString
+  }
+
 }
