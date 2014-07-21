@@ -66,18 +66,18 @@ case class EvernoteService(factory: ClientFactory) {
 
 object EvernoteService {
 
-  def create(auth: EvernoteAuth) =
+  def apply(auth: EvernoteAuth): EvernoteService =
     EvernoteService(
       new ClientFactory(
         new com.evernote.auth.EvernoteAuth(auth.environment, auth.token)))
 
   object ENML {
-    import javax.xml.parsers.{SAXParser, SAXParserFactory}
-
-import scala.xml.Elem
+    import scala.xml.Elem
     import scala.xml.factory.XMLLoader
 
     private object XML extends XMLLoader[Elem] {
+      import javax.xml.parsers.{SAXParser, SAXParserFactory}
+
       override def parser: SAXParser = {
         val f = SAXParserFactory.newInstance()
         f.setValidating(false)
