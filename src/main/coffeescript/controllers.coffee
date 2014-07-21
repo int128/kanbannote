@@ -26,3 +26,7 @@ controllers.controller 'NoteController', ($scope, $routeParams, Note) ->
 controllers.controller 'NoteEditController', ($scope, $routeParams, Note) ->
   Note.get($routeParams.guid).success (note) ->
     $scope.note = note
+  $scope.save = (note) ->
+    Note.save note.guid,
+      title: note.title
+      content: note.content

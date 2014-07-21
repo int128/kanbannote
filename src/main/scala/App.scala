@@ -39,6 +39,15 @@ class App extends unfiltered.filter.Plan with Evernote {
           ResourcesElement(note)(auth)
         )))
 
+    case POST(Path(Seg("note" :: guid :: Nil))) & AuthHeader(auth) =>
+      JsonContent ~>
+        ResponseString(compact(render(
+          ("guid" -> guid) ~
+          ("title" -> "TODO") ~
+          ("content" -> "TODO")
+          // TODO
+        )))
+
     case POST(Path(Seg("note" :: guid :: "resource" :: Nil)) & MultiPart(req)) & AuthHeader(auth) =>
       MultiPartParams.Memory(req).files("file") match {
         case Seq(file, _*) =>

@@ -14,6 +14,11 @@ services.factory 'Note', ($http, $upload, authStorage) ->
       headers:
         'X-EN-Token': authStorage.token
         'X-EN-Environment': authStorage.environment
+  save: (guid, data) ->
+    $http.post "/note/#{guid}", data,
+      headers:
+        'X-EN-Token': authStorage.token
+        'X-EN-Environment': authStorage.environment
   addResources: (guid, files, onSuccess) ->
     files.forEach (file) ->
       $upload.upload
