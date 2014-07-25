@@ -1,7 +1,7 @@
 gulp = require('gulp')
 concat = require('gulp-concat')
 coffee = require('gulp-coffee')
-ngmin = require('gulp-ngmin')
+ngAnnotate = require('gulp-ng-annotate')
 uglify = require('gulp-uglify')
 less = require('gulp-less')
 connect = require('gulp-connect')
@@ -40,7 +40,7 @@ gulp.task 'bower', ->
 gulp.task 'coffee', ->
   gulp.src(sources.coffee)
     .pipe(coffee())
-    .pipe(ngmin())
+    .pipe(ngAnnotate())
     .pipe(uglify())
     .pipe(concat('app.js'))
     .pipe(gulp.dest(targets.gulp))
