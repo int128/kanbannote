@@ -2,7 +2,7 @@ app = angular.module 'knApp', ['ngRoute', 'angular-loading-bar', 'knControllers'
 
 app.config ($routeProvider) ->
   $routeProvider
-    .when '/notes',
+    .when '/',
       templateUrl: 'notes.html'
       controller: 'NotesController'
     .when '/note/:guid',
@@ -11,9 +11,17 @@ app.config ($routeProvider) ->
     .when '/note/:guid/edit',
       templateUrl: 'note-edit.html'
       controller: 'NoteEditController'
-    .otherwise
+    .when '/login',
       templateUrl: 'login.html'
       controller: 'LoginController'
+    .otherwise
+      redirectTo: '/'
+
+app.run ($rootScope, $location, AuthService) ->
+  $rootScope.$on '$routeChangeStart', (event) ->
+    if not AuthService.isLoggedIn()
+      event.preventDefault()
+      $location.path '/login'
 
 app.filter 'asHtml', ($sce) ->
   (value) -> $sce.trustAsHtml value

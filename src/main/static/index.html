@@ -8,16 +8,16 @@
   <link rel="stylesheet" href="css/bootstrap.min.css" />
   <link rel="stylesheet" href="app.css" />
 </head>
-<body>
+<body ng-controller="AppController">
 
   <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
       <div class="navbar-header">
-        <div class="navbar-brand">Kanban Note</div>
+        <a href="/" class="navbar-brand">Kanban Note</a>
       </div>
       <ul class="nav navbar-nav navbar-right">
-        <li>
-          <a href="/">
+        <li ng-if="loggedIn">
+          <a ng-click="logout()" href="#">
             <span class="glyphicon glyphicon-log-out"></span> Logout
           </a>
         </li>

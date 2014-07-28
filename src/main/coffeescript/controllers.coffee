@@ -1,12 +1,19 @@
 controllers = angular.module 'knControllers', ['ngStorage']
 
-controllers.controller 'LoginController', ($scope, $location, authStorage) ->
-  delete authStorage.token
-  delete authStorage.environment
+controllers.controller 'AppController', ($scope, $location, AuthService) ->
+  $scope.loggedIn = AuthService.isLoggedIn()
+  $scope.logout = ->
+    AuthService.logout()
+    $location.path '/'
+
+controllers.controller 'LoginController', ($scope, $location, AuthService) ->
+  if AuthService.isLoggedIn()
+    $location.path '/'
   $scope.loginWithToken = (token, environment) ->
-    authStorage.token = token
-    authStorage.environment = environment
-    $location.path 'notes'
+    AuthService.login
+      token: token
+      environment: environment
+    $location.path '/'
 
 controllers.controller 'NotesController', ($scope, Note) ->
   Note.list().success (notes) ->
