@@ -18,6 +18,8 @@ targets =
   gulp: 'src/main/webapp/'
   appengineDevServer: 'target/webapp/'
 
+gulp.task 'default', ['build']
+
 gulp.task 'bower', ->
   bower.commands.install().on 'end', (installed) ->
     gulp.src([
@@ -58,10 +60,12 @@ gulp.task 'static', ->
     .pipe(gulp.dest(targets.gulp))
     .pipe(gulp.dest(targets.appengineDevServer))
 
-gulp.task 'default', ['clean'], ->
+gulp.task 'clean', (cb) -> del targets.gulp, cb
+
+gulp.task 'build', ['clean'], ->
   gulp.start 'bower', 'coffee', 'less', 'static'
 
-gulp.task 'watch', ->
+gulp.task 'watch', ['build'], ->
   gulp.watch sources.bower,  ['bower']
   gulp.watch sources.coffee, ['coffee']
   gulp.watch sources.less,   ['less']
@@ -72,5 +76,3 @@ gulp.task 'server', ['watch'], ->
     root: targets.gulp
     port: 8888
     livereload: true
-
-gulp.task 'clean', (cb) -> del targets.gulp, cb
