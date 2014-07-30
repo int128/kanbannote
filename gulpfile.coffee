@@ -4,7 +4,7 @@ coffee = require('gulp-coffee')
 ngAnnotate = require('gulp-ng-annotate')
 uglify = require('gulp-uglify')
 less = require('gulp-less')
-connect = require('gulp-connect')
+nodemon = require('gulp-nodemon')
 del = require('del')
 bower = require('bower')
 
@@ -13,10 +13,12 @@ sources =
   coffee: 'src/main/coffeescript/**/*'
   less:   'src/main/less/**/*'
   static: 'src/main/static/**/*'
+  mockserverCoffee: 'src/mockserver/coffeescript/**/*'
 
 targets =
   gulp: 'src/main/webapp/'
   appengineDevServer: 'target/webapp/'
+  mockserver: 'target/mockserver/'
 
 gulp.task 'default', ['build']
 
@@ -71,8 +73,18 @@ gulp.task 'watch', ['build'], ->
   gulp.watch sources.less,   ['less']
   gulp.watch sources.static, ['static']
 
-gulp.task 'server', ['watch'], ->
-  connect.server
-    root: targets.gulp
-    port: 8888
-    livereload: true
+gulp.task 'coffee-server', ->
+  gulp.src(sources.mockserverCoffee)
+    .pipe(coffee())
+    .pipe(gulp.dest(targets.mockserver))
+
+gulp.task 'watch-coffee-server', ['coffee-server'], ->
+  gulp.watch sources.mockserverCoffee, ['coffee-server']
+
+gulp.task 'server', ['watch-coffee-server', 'watch'], ->
+  nodemon
+    script: "#{targets.mockserver}/server.js"
+    watch:  targets.mockserver
+    env:
+      PORT: 8888
+      DOCROOT: targets.gulp
