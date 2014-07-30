@@ -1,12 +1,12 @@
-gulp = require('gulp')
-concat = require('gulp-concat')
-coffee = require('gulp-coffee')
-ngAnnotate = require('gulp-ng-annotate')
-uglify = require('gulp-uglify')
-less = require('gulp-less')
-nodemon = require('gulp-nodemon')
-del = require('del')
-bower = require('bower')
+gulp        = require 'gulp'
+concat      = require 'gulp-concat'
+coffee      = require 'gulp-coffee'
+ngAnnotate  = require 'gulp-ng-annotate'
+uglify      = require 'gulp-uglify'
+less        = require 'gulp-less'
+nodemon     = require 'gulp-nodemon'
+del         = require 'del'
+bower       = require 'bower'
 
 sources =
   bower:  'bower.json'
@@ -31,36 +31,36 @@ gulp.task 'bower', ->
         'bower_components/ngstorage/ngStorage.min.js'
         'bower_components/ng-file-upload/angular-file-upload.min.js'
       ])
-      .pipe(concat('lib.js'))
-      .pipe(gulp.dest(targets.gulp))
-      .pipe(gulp.dest(targets.appengineDevServer))
+      .pipe concat 'lib.js'
+      .pipe gulp.dest targets.gulp
+      .pipe gulp.dest targets.appengineDevServer
     gulp.src([
         'bower_components/bootstrap/dist/**/*'
         'bower_components/angular-loading-bar/build/loading-bar.min.css'
       ])
-      .pipe(gulp.dest(targets.gulp))
-      .pipe(gulp.dest(targets.appengineDevServer))
+      .pipe gulp.dest targets.gulp
+      .pipe gulp.dest targets.appengineDevServer
 
 gulp.task 'coffee', ->
-  gulp.src(sources.coffee)
-    .pipe(coffee())
-    .pipe(ngAnnotate())
-    .pipe(uglify())
-    .pipe(concat('app.js'))
-    .pipe(gulp.dest(targets.gulp))
-    .pipe(gulp.dest(targets.appengineDevServer))
+  gulp.src sources.coffee
+    .pipe coffee()
+    .pipe ngAnnotate()
+    .pipe uglify()
+    .pipe concat 'app.js'
+    .pipe gulp.dest targets.gulp
+    .pipe gulp.dest targets.appengineDevServer
 
 gulp.task 'less', ->
-  gulp.src(sources.less)
-    .pipe(less())
-    .pipe(concat('app.css'))
-    .pipe(gulp.dest(targets.gulp))
-    .pipe(gulp.dest(targets.appengineDevServer))
+  gulp.src sources.less
+    .pipe less()
+    .pipe concat 'app.css'
+    .pipe gulp.dest targets.gulp
+    .pipe gulp.dest targets.appengineDevServer
 
 gulp.task 'static', ->
-  gulp.src(sources.static)
-    .pipe(gulp.dest(targets.gulp))
-    .pipe(gulp.dest(targets.appengineDevServer))
+  gulp.src sources.static
+    .pipe gulp.dest targets.gulp
+    .pipe gulp.dest targets.appengineDevServer
 
 gulp.task 'clean', (cb) -> del targets.gulp, cb
 
@@ -74,9 +74,9 @@ gulp.task 'watch', ['build'], ->
   gulp.watch sources.static, ['static']
 
 gulp.task 'coffee-server', ->
-  gulp.src(sources.mockserverCoffee)
-    .pipe(coffee())
-    .pipe(gulp.dest(targets.mockserver))
+  gulp.src sources.mockserverCoffee
+    .pipe coffee()
+    .pipe gulp.dest targets.mockserver
 
 gulp.task 'watch-coffee-server', ['coffee-server'], ->
   gulp.watch sources.mockserverCoffee, ['coffee-server']
